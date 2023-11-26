@@ -7,6 +7,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.shortcuts import get_object_or_404
+from django.core.management import call_command
+
 
 
 
@@ -62,3 +64,12 @@ class AnnotationView(View):
     def get(self, request):
         annotations = list(Annotation.objects.values())
         return JsonResponse(annotations, safe=False)
+
+
+@csrf_exempt
+def clear_database(request):
+    if request.method == 'POST':
+        call_command('clear_db')
+        return JsonResponse({'status': 'success'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
