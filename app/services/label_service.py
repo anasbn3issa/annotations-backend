@@ -1,9 +1,9 @@
 # label_service.py
 from ..models import Label
 
-def create_label(name, color):
+def create_label(name):
     try:
-        label = Label.objects.create(name=name, color=color)
+        label = Label.objects.create(name=name)
         return {'status': 'created', 'label_id': label.id}
     except Exception as e:
         return {'status': 'error', 'message': str(e)}

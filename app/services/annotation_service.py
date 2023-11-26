@@ -1,7 +1,7 @@
 # annotation_service.py
-from ..models import Annotation
+from ..models import Annotation, Label
 
-def create_annotation(document, label, start_position, end_position, annotated_text):
+def create_annotation(label, start_position, end_position, annotated_text):
     return Annotation.objects.create(
         label=label,
         start_position=start_position,

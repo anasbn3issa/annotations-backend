@@ -6,8 +6,13 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from django.views import View
+from django.shortcuts import get_object_or_404
+
+
+
 import json
 from .models import Label, Annotation
+
 
 
 @method_decorator(csrf_exempt, name='dispatch')
@@ -19,9 +24,17 @@ class LabelView(View):
     def post(self, request):
         data = json.loads(request.body.decode('utf-8'))
         name = data.get('name', '')
-        color = data.get('color', '')
-        Label.objects.create(name=name, color=color)
-        return JsonResponse({'status': 'created'}, status=201)
+        label = Label.objects.create(
+            name = name,
+        )
+        return JsonResponse({'status': 'created', 'name': label.id}, status=201)
+    
+@method_decorator(csrf_exempt, name='dispatch')
+class LabelDeleteView(View):
+    def delete(self, request, pk):
+        label = get_object_or_404(Label, pk=pk)
+        label.delete()
+        return JsonResponse({'status': 'deleted'}, status=204)
 
 
 @method_decorator(csrf_exempt, name='dispatch')
