@@ -73,3 +73,11 @@ def clear_database(request):
         return JsonResponse({'status': 'success'})
     else:
         return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+@csrf_exempt
+def clear_annotations(request):
+    if request.method == 'POST':
+        call_command('clear_annotations')
+        return JsonResponse({'status': 'success'})
+    else:
+        return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
